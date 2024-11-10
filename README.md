@@ -34,8 +34,8 @@ To run the application in Python you should follow next steps:
 ## Currency conversion
 
 The main purpose of the application is to enable user easy navigation throughout the application and the ability to convert currencies that he wants.
-It will utilize the API to pull in real-time currency information and any change in the market 
-API docs: > https://fxratesapi.com/docs
+It will utilize the API to pull in real-time currency information and any change in the market. 
+>API docs: https://fxratesapi.com/docs
 
 ## Easy to understand process
 
