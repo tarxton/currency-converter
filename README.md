@@ -19,7 +19,7 @@ To run the application in JavaScript you should follow next steps:
 - Have installed the Node on the device (Windows/Mac OS/Linux) - Necessary to run JS code for server-side
   You can find guideance and download link for it on the [Link](https://nodejs.org/en)
 - Verify installation in the terminal (`node --version`)
-- Navigate to the root folder of JS project and run the console application file (`node currency-converter.js`)
+- Navigate to the root folder of JS project and run the console application file (`node currencyConverter.js`)
 
 ## Python 
 
@@ -27,7 +27,7 @@ To run the application in Python you should follow next steps:
 - Have installed the Python 3 on the device (Windows/Mac OS/Linux) - Necessary to run Python code
   You can find guideance and download link for it on the [Link](https://www.python.org/downloads/)
 - Verify installation in the terminal (`(python or python3) --version`)
-- Navigate to the root folder of Python project and run the console application file (`python currency-converter.py`)
+- Navigate to the root folder of Python project and run the console application file (`python currency_converter.py`)
 
 # Features of the application 
 
