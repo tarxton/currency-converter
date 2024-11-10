@@ -1,5 +1,5 @@
 # Currency Converter
-A console application that converts between different currencies (e.g., dollar, euro).
+A console application that converts between different currencies (e.g. dollar, euro).
 
 Languages used: C#, Python, JavaScript
 
