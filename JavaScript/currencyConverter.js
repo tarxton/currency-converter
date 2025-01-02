@@ -1,33 +1,83 @@
 const readline = require('readline');
-const https = require('https');
+const fs = require('fs');
 
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
 
-// Preset currencies with their symbols
+const HISTORY_FILE = 'conversion_history.json';
+
 const presetCurrencies = {
-    1: { code: 'USD', symbol: '$', name: 'US Dollar' },
-    2: { code: 'EUR', symbol: '€', name: 'Euro' },
-    3: { code: 'GBP', symbol: '£', name: 'British Pound' },
-    4: { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
-    5: { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
-    6: { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
-    7: { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc' },
-    8: { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
-    9: { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
-    10: { code: 'SGD', symbol: 'S$', name: 'Singapore Dollar' },
+    1: { code: 'BAM', symbol: 'BAM', name: 'Bosnian Mark' },
+    2: { code: 'USD', symbol: '$', name: 'US Dollar' },
+    3: { code: 'EUR', symbol: '€', name: 'Euro' },
+    4: { code: 'GBP', symbol: '£', name: 'British Pound' },
+    5: { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
+    6: { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
+    7: { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
+    8: { code: 'CHF', symbol: 'Fr', name: 'Swiss Franc' },
+    9: { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
+    10: { code: 'NZD', symbol: 'NZ$', name: 'New Zealand Dollar' },
     11: { code: 'CUSTOM', symbol: '', name: 'Custom Currency' }
 };
 
 class CurrencyConverter {
+    /* Normally I would add the API key to .env file or to Git Secrets but to not complicate to much with this I will leave it 
+    in constructor since api is free up to 1k requests/month */
     constructor() {
         this.rates = null;
         this.fromCurrency = '';
         this.toCurrency = '';
         this.amount = 0;
         this.API_KEY = 'fxr_live_0a957a07772646840c2f6e1a0a6e6f4fa17d';
+        this.history = this.loadHistory();
+    }
+
+    loadHistory() {
+        try {
+            if (fs.existsSync(HISTORY_FILE)) {
+                const data = fs.readFileSync(HISTORY_FILE, 'utf8');
+                return JSON.parse(data);
+            }
+        } catch (error) {
+            console.error('Error loading history:', error.message);
+        }
+        return [];
+    }
+
+    saveHistory(conversion) {
+        try {
+            this.history.push(conversion);
+            fs.writeFileSync(HISTORY_FILE, JSON.stringify(this.history, null, 2));
+        } catch (error) {
+            console.error('Error saving history:', error.message);
+        }
+    }
+
+    formatDate(date) {
+        return date.toLocaleString('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+    }
+
+    displayHistory() {
+        if (this.history.length === 0) {
+            console.log('\nNo conversion history available.');
+            return;
+        }
+
+        console.log('\n=== Conversion History ===');
+        this.history.forEach((conversion, index) => {
+            console.log(`\n${index + 1}. ${conversion.date}`);
+            console.log(`   ${this.getSymbol(conversion.fromCurrency)}${conversion.amount.toFixed(2)} → ${this.getSymbol(conversion.toCurrency)}${conversion.result.toFixed(2)}`);
+        });
     }
 
     async fetchRates() {
@@ -86,7 +136,6 @@ class CurrencyConverter {
                 const selection = parseInt(answer);
                 if (selection >= 1 && selection <= 11) {
                     if (selection === 11) {
-                        // Handle custom currency input
                         rl.question('\nEnter custom currency code (e.g., SEK): ', (customCurrency) => {
                             const upperCurrency = customCurrency.toUpperCase();
                             if (this.isValidCurrency(upperCurrency)) {
@@ -127,9 +176,10 @@ class CurrencyConverter {
         console.log('\n=== Currency Converter ===');
         console.log('1. Start conversion');
         console.log('2. Reverse last conversion');
-        console.log('3. Exit');
+        console.log('3. View conversion history');
+        console.log('4. Exit');
         
-        rl.question('\nSelect an option (1-3): ', (answer) => {
+        rl.question('\nSelect an option (1-4): ', (answer) => {
             switch(answer) {
                 case '1':
                     this.startConversion();
@@ -145,6 +195,10 @@ class CurrencyConverter {
                     }
                     break;
                 case '3':
+                    this.displayHistory();
+                    this.showMainMenu();
+                    break;
+                case '4':
                     this.exit();
                     break;
                 default:
@@ -177,7 +231,16 @@ class CurrencyConverter {
         const result = this.convert(this.amount, this.fromCurrency, this.toCurrency);
         if (result !== null) {
             console.log('\nResult:');
-            console.log(`${this.getSymbol(this.fromCurrency)}${this.amount.toFixed(2)} ${this.fromCurrency} = ${this.getSymbol(this.toCurrency)}${result.toFixed(2)} ${this.toCurrency}`);
+            console.log(`${this.getSymbol(this.fromCurrency)}${this.amount.toFixed(2)} = ${this.getSymbol(this.toCurrency)}${result.toFixed(2)}`);
+            
+            const conversion = {
+                date: this.formatDate(new Date()),
+                fromCurrency: this.fromCurrency,
+                toCurrency: this.toCurrency,
+                amount: this.amount,
+                result: result
+            };
+            this.saveHistory(conversion);
         } else {
             console.log('\nError performing conversion!');
         }
@@ -185,7 +248,7 @@ class CurrencyConverter {
     }
 
     exit() {
-        console.log('\nThank you for using Currency Converter!');
+        console.log('\nThank you for trusting us!');
         rl.close();
         process.exit(0);
     }

@@ -1,0 +1,44 @@
+[
+  {
+    "date": "02/01/2025, 12:47:54",
+    "fromCurrency": "CHF",
+    "toCurrency": "BAM",
+    "amount": 10,
+    "result": 20.860451396664853
+  },
+  {
+    "date": "02/01/2025, 12:48:42",
+    "fromCurrency": "USD",
+    "toCurrency": "USD",
+    "amount": 10,
+    "result": 10
+  },
+  {
+    "date": "02/01/2025, 12:56:38",
+    "fromCurrency": "RSD",
+    "toCurrency": "HRK",
+    "amount": 10,
+    "result": 0.6019094346718864
+  },
+  {
+    "date": "05/01/2025, 12:48:40",
+    "fromCurrency": "BAM",
+    "toCurrency": "USD",
+    "amount": 10,
+    "result": 5.273509747742733
+  },
+  {
+    "date": "05/01/2025, 12:49:05",
+    "fromCurrency": "EUR",
+    "toCurrency": "BAM",
+    "amount": 10,
+    "result": 19.554417811448655
+  },
+  {
+    "date": "05/01/2025, 12:49:57",
+    "fromCurrency": "BAM",
+    "toCurrency": "EUR",
+    "amount": 10,
+    "result": 5.113933859423778
+  }
+]
