@@ -40,7 +40,7 @@ def main():
 
     rates = data.get("rates", {})
     base_currency = data.get("base", "USD")
-    rates[base_currency] = 1  # Ensure the base currency itself is in the rates list
+    rates[base_currency] = 1  
 
     print(f"Exchange rates base currency: {base_currency}")
     print("Available currencies:", ", ".join(rates.keys()))
