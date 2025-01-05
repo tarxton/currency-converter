@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace CurrencyConverterApp
 {
-    class Program
+    class CurrencyConverter
     {
         static async Task Main(string[] args)
         {
-            Console.WriteLine("Welcome to the Currency Converter!");
+            Console.WriteLine("Currency Converter");
 
             Console.Write("Enter base currency (e.g., USD): ");
             string baseCurrency = Console.ReadLine().ToUpper();
