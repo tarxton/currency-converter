@@ -19,7 +19,7 @@ To run the application in JavaScript you should follow next steps:
 - Have installed the Node on the device (Windows/Mac OS/Linux) - Necessary to run JS code for server-side
   You can find guideance and download link for it on the [Link](https://nodejs.org/en)
 - Verify installation in the terminal (`node --version`)
-- Navigate to the root folder of JS project and run the console application file (`node currencyConverter.js`)
+- Navigate to the root folder of JS project type 'npm install' in console and run the console application file (`node currencyConverter.js`)
 
 ## Python 
 
