@@ -29,6 +29,12 @@ namespace CurrencyConverterApp
             {
                 double convertedAmount = await ConvertCurrency(baseCurrency, targetCurrency, amount);
                 Console.WriteLine($"{amount} {baseCurrency} = {convertedAmount:F2} {targetCurrency}");
+                Console.WriteLine("Would you like to reverse the conversion? (y/n)");
+                string reverse = Console.ReadLine().ToLower();
+                if (reverse == "y") {
+                    convertedAmount = await ConvertCurrency(targetCurrency, baseCurrency, amount);
+                    Console.WriteLine($"{amount} {targetCurrency} = {convertedAmount:F2} {baseCurrency}");
+                }
             }
             catch (Exception ex)
             {
